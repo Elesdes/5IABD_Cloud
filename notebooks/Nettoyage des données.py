@@ -21,8 +21,8 @@ df_test = spark.read.table("testtable")
 df_train = df_train.select(cols_with_y)
 df_test = df_test.select(cols_with_y)
 
-df_train = df_train.na.drop()
-df_test = df_test.na.drop()
+#df_train = df_train.na.drop()
+#df_test = df_test.na.drop()
 
 # COMMAND ----------
 
@@ -31,3 +31,8 @@ df_train.count()
 # COMMAND ----------
 
 display(df_train)
+
+# COMMAND ----------
+
+df_train.write.mode("overwrite").saveAsTable("TrainCleanTable")
+df_test.write.mode("overwrite").saveAsTable("TestCleanTable")

@@ -1,4 +1,8 @@
 # Databricks notebook source
+dbutils.fs.ls("/mnt/mntgrp1")
+
+# COMMAND ----------
+
 dbutils.fs.mount(
 source = "wasbs://stockcsv@azuregrp1.blob.core.windows.net",
 mount_point = "/mnt/mntgrp1",
@@ -10,7 +14,12 @@ extra_configs = {"fs.azure.account.key.azuregrp1.blob.core.windows.net":dbutils.
 
 # COMMAND ----------
 
-df = spark.read.csv("/mnt/mntgrp1/train.csv", header=True)
+df = spark.read.csv("/mnt/mntgrp1/train.csv", header=True, inferSchema=True)
+df = df.drop("_c0")
+
+# COMMAND ----------
+
+df = spark.read.csv("/mnt/mntgrp1/train.csv", header=True, inferSchema=True)
 df = df.drop("_c0")
 
 # COMMAND ----------
