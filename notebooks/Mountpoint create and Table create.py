@@ -3,14 +3,22 @@ dbutils.fs.ls("/mnt/mntgrp1")
 
 # COMMAND ----------
 
+"""
 dbutils.fs.mount(
 source = "wasbs://stockcsv@azuregrp1.blob.core.windows.net",
 mount_point = "/mnt/mntgrp1",
-extra_configs = {"fs.azure.account.key.azuregrp1.blob.core.windows.net":dbutils.secrets.get(scope = "scopegrp1", key = "victoria")})
+extra_configs = {"fs.azure.account.key.azuregrp1.blob.core.windows.net":dbutils.secrets.get(scope = "scopegrp1", key = "victoria")})"""
 
 # COMMAND ----------
 
 # dbutils.fs.unmount("/mnt/mntgrp1")
+
+# COMMAND ----------
+
+tables = spark.catalog.listTables()
+for table in tables:
+    spark.sql("DROP TABLE IF EXISTS " + table.name + ";")
+
 
 # COMMAND ----------
 
@@ -48,7 +56,7 @@ df.write.mode("overwrite").saveAsTable("TrainTable")
 
 # COMMAND ----------
 
-df = spark.read.csv("/mnt/mntgrp1/test.csv", header=True)
+df = spark.read.csv("/mnt/mntgrp1/test.csv", header=True, inferSchema=True)
 df = df.drop("_c0")
 
 # COMMAND ----------
@@ -73,7 +81,7 @@ df.write.mode("overwrite").saveAsTable("TestTable")
 
 # COMMAND ----------
 
-df = spark.read.csv("/mnt/mntgrp1/val.csv", header=True)
+df = spark.read.csv("/mnt/mntgrp1/val.csv", header=True, inferSchema=True)
 df = df.drop("_c0")
 
 # COMMAND ----------
